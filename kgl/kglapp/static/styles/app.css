@@ -1,0 +1,87 @@
+/* .orena{
+    color: aqua;
+    text-align: center;
+} */
+
+#tom {
+    color: orange;
+}
+
+.container {
+    color:dimgray
+}
+
+#img {
+    background-image: url("foodapp/static/images/background.jpg"); /* or .png etc. */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Css for the side nav bar base.html */
+.floating-sidebar {
+    width: 250px;
+    height: 100vh;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    color: black;
+    position: fixed; /* so it stays in place */
+    top: 0;
+    left: 0;
+    z-index: 10;
+}
+
+/* Css for the links of the side nav bar base.html */
+.floating-sidebar .nav-link {
+    color: green;
+    margin-bottom: 10px;
+}
+
+/* Text alignment of the side nav bar links base.html */
+.floating-sidebar .nav-link:hover {
+    text-align: center;
+}
+
+/* This css is to stop the over lapping of the table in the home.html and by the navbar */
+.main-content {
+    margin-left: 230px;  /* Make space for sidebar */
+    padding: 20px;
+}
+
+/* Css for the footer  */
+#footer {
+    text-shadow: black;
+    background-color:darkturquoise;
+    color: rgb(28, 26, 26);
+    text-align: center;
+    padding: 5px;
+    bottom: 0;
+    right: 0;
+    left: 600px;
+    width: 50vw;
+    position: fixed;
+}
+
+/* Css for the wrapper to prevent content from over lapping the nav bar */
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+}
+
+/* Css for the side nav to prevent over lapping of content  */
+.main-content {
+    flex: 1;
+}
+
+/*  This is for the body of the dashboard */
+/* .body {
+    background-color: lightslategray;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+} */
+

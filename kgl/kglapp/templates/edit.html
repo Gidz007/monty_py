@@ -1,0 +1,79 @@
+{% extends 'manager.html' %}
+
+
+
+{% block title %} Edit Inventory {% endblock %}
+
+
+
+<!-- This form is meant to edit the inventory of every branch in case of changes -->
+
+
+
+{% block content %}
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-6">
+            <form action="" method="POST">
+
+                <h1> Inventory Edit Form </h1>
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="product" class="form-label"> Select the proudct </label>
+                    <select name="product" id="product" class="form-select">
+                        {% for prod in products %}
+                        <option value="{{ prod.id }}" {% if prod.id == edit_details.product.id %}selected{% endif %}>
+                            {{ prod.product_name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <select name="branch" id="branch" class="form-select">
+                        {% for br in branches %}
+                        <option value="{{ br.id }}" {% if br.id == edit_details.branch.id %}selected{% endif %}>
+                            {{ br.branch_name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>                
+                <div class="mb-3">
+                    <label for="buying_price" class="form-label"> Buying Price </label>
+                    <input name="buying_price" type="number" required class="form-control" value="{{edit_details.buying_price}}">
+                </div>  
+                <div class="mb-3">
+                    <label for="unit_of_measure" class="form-label"> unite_of_measure </label>
+                    <input name="unite_of_measure" type="number" required class="form-control" value="{{edit_details.unite_of_measure}}">
+                </div>              
+                <div class="mb-3">
+                    <label for="unit_price" class="form-label"> Unit_price </label>
+                    <input name="unit_price" type="number" required class="form-control" value="{{edit_details.unit_price}}">
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label"> Description </label>
+                    <textarea name="description" class="form-control">{{ edit_details.description }}</textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="expiry_date" class="form-label"> Expiry Date </label>
+                    <input name="expiry_date" type="date" required class="form-control" value="{{ edit_details.expiry_date|date:'Y-m-d' }}">
+                </div>
+                <div class="mb-3">
+                    <label for="stock_quantity" class="form-label"> Stock Quantity </label>
+                    <input name="stock_quantity" required type="number" class="form-control" value="{{edit_details.stock_quantity}}">
+                </div>
+                <div class="mb-3">
+                    <label for="reorder_level" class="form-label"> Reorder Level </label>
+                    <input name="reorder_level" required type="number" class="form-control" value="{{edit_details.reorder_level}}">
+                </div>
+                <input type="submit" class="btn btn-outline-info" value="Submit">
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

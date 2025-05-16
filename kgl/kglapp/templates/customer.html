@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+
+
+{% block title %} Customer regestration {% endblock %}
+
+
+
+<!-- This form is meant to capture the customer's details -->
+
+
+
+{% block content %}
+
+<!-- This is to capture details of customers who have made have purchased products at a credit level -->
+
+
+<div class="container d-flex juctify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="row w-100">
+        <div class="col-6 mx-auto">
+
+            <h1><strong> Customer regestrations from </strong></h1>
+
+            <form action="" method="POST">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="full_names" class="form-label"> Names </label>
+                    <input name="full_names" required type="text" class="form-control" placeholder="Please enter your names">
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label"> Email </label>
+                    <input name="email" required type="email" class="form-control" placeholder="Enter your email here">
+                </div>
+                <div class="mb-3">
+                    <label for="contact" class="form-label"> Contact </label>
+                    <input name="contact" required type="text" class="form-control" placeholder="Enter contant details">
+                </div>
+                <div class="mb-3">
+                    <label for="address" class="form-label"> Address </label>
+                    <input name="address" required type="text" class="form-control" placeholder="Enter your adress here">
+                </div>
+                <div class="mb-3">
+                    <label for="gender" class="form-label mb-3"> Select gender </label>
+                    <select name="gender" id="">
+                        <option value="female"> Male </option>
+                        <option value="male"> Female </option>
+                    </select>
+                </div>
+                <input type="submit" class="btn btn-outline-info" value="Submit">
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

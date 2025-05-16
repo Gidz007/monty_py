@@ -1,0 +1,59 @@
+{% extends 'manager.html' %}
+<!-- This is the title of the page -->
+
+
+
+{% block title %} Details of product {% endblock %}
+
+
+
+<!-- Data querried from the database to be used as reports on the dashboard -->
+{% block content %}
+<div class="container">
+
+    <h1> Product details </h1>
+    <table class="table table-hover">
+        <tr>
+            <th> id </th>
+            <td> {{ product.id }} </td>
+        </tr>
+        <tr>
+            <th> Name </th>
+            <td> {{ product.product}} </td>
+        </tr>
+        <tr>
+            <th> Unit price </th>
+            <td> {{ product.unit_price }} </td>
+        </tr>
+        <tr>
+            <th> Description </th>
+            <td> {{ product.description }} </td>
+        </tr>  
+        <tr>
+            <th> Expiry date </th>
+            <td> {{ product.expiry_date }} </td>
+        </tr>             
+    </table>
+    <div class="row">
+        <div class="col-6">
+            <div class="flex flex-col mt-2">
+                <label for=""> Delete Inventory </label>
+                <a href="/delete/{{ product.id }}" style="background-color:Tomato;" class="text-white p-3 rounded mb-3"> Delete </a>
+            </div>
+
+            <!-- A dynamic url to edit an inventory -->            
+            <div class="col-6 flex flex-col mb-5 mt-5 ">
+                <label for=""> Edit Inventory </label>
+                <a href="/edit/{{ product.id }}" style="background-color:MediumSeaGreen;" class="text-white mt-5 mb-3 p-3 rounded"> Edit </a> 
+            </div> 
+            
+            <!-- A dynamic url to sale an inventory -->            
+            <div class="col-6 flex flex-col mb-5 mt-5 ">
+                <label for=""> Edit Inventory </label>
+                <a href="/sale/{{ product.id }}/" class="btn btn-primary">Make Sale</a>
+            </div> 
+        </div>
+    </div>
+</div>
+
+{% endblock %}

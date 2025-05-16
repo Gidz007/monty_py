@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="Description" content="Enter your description here" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- this line assess the everything in the static file, and the main aim is to use external css in my project -->
+    <link rel="stylesheet" href="{% static 'styles/app.css' %}">
+    <Title>{% block title %}{% endblock %}</Title>
+</head>
+
+<body class="body">
+    <div class="wrapper">
+        <div class="floating-sidebar">
+            <h5><strong> Navigation </strong></h5>
+            <ul class="nav flex-column">
+                <li class="nav-item"><a class="nav-link" href="#"> View invnetory </a></li>
+                <li class="nav-item"><a class="nav-link" href="customers"> Record customer </a></li>                
+            </ul>
+        </div>
+        <div class="main-content">
+            {% block content %}
+            <!-- Add contenta here -->
+            {% endblock %}
+        </div>
+        <div class="main-content">
+            <footer id="footer">
+                Copyright &copy; reserved to Gideon 2025
+            </footer>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/js/bootstrap.min.js"></script>
+</body>
+
+</html>

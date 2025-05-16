@@ -1,0 +1,44 @@
+{% extends 'manager.html' %}
+
+{% block title %} Product Display {% endblock %}
+
+
+<!-- This template will display a product querried from the database -->
+
+{% block content %}
+
+<div class="container">
+    <table class="table table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th> Product Name </th>
+                <th> Price </th>
+                <th> Quantity </th>
+                <th> Description </th>
+                <th> Expiry Date </th>
+                <th> Edit </th>                                                
+            </tr>
+        </thead>
+        {% for product in all_products %}
+            <tbody>
+                <tr>
+                    <td>{{ product.product_name }}</td>
+                    <td>{{ product.unit_price }} shs </td>
+                    <td>{{ product.quantity }} kgs </td>
+                    <td>{{ product.description }}</td>
+                    <td>{{ product.expiry_date }}</td> 
+                    
+                    <!-- A dynamic url to edit a product -->
+                    <td>
+                        <a href="/editproduct/{{ product.id }}"> Edit </a>
+                    </td>                                     
+                </tr>
+            </tbody>
+        {% endfor %}
+    </table>
+    <div class="mb-3 btn btn-outline-info">
+        <button><a href="/addproduct"> Add new product </a></button>
+    </div>
+</div>
+
+{% endblock %}

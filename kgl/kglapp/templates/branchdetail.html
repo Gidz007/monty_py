@@ -1,0 +1,124 @@
+{% extends 'base2.html' %}
+
+{% block title %} Branch details {% endblock %}
+
+
+<!-- This form is for reports that will be displaied for every branch.  -->
+<!-- These a dashboard branch detail -->
+{% block content %}
+<div class="container">
+    <div class="row">
+
+        <h1> <strong> Branch Reports  </strong> </h1>
+        <div class="col-2">
+            <h1> {{total_products}} </h1>
+            <p> Total Products </p>
+        </div>
+        <div class="col-2">
+            <h1> {{expired_products_count}} </h1>
+            <p> Expiaries </p>
+        </div>
+        <div class="col-2">
+            <h1> {{total_creditsales}} </h1>
+            <p> Total Credit sales </p>
+        </div>
+        <div class="col-2">
+            <h1> {{sales}} </h1>
+            <p> Total Sales </p>
+        </div> 
+        <div class="jumbotron bg-secondary text-white mt-5 text-right">
+            <h1 style="font-size: 50px"> {{ name.branch_name }} </h1>
+            <p style="font-size: 20px"> {{ name.id }} </p>
+            <p style="font-size: 20px"> {{ name.location }} </p>
+            <p style="font-size: 20px"> {{ name.contact }} </p>
+        </div>     
+    </div>    
+</div> 
+
+<div class="container mt-5">
+    <h1><b> Branch Report </b></h1>
+
+    <!--  This is the Reorder Levels -->
+    <!-- There reorderlevel will be displaied for every product that is to go below it  -->
+    <h2>Reorder Levels</h2>
+    <table class="table table-bordered">
+        <thead class="table-dark text-white">
+            <tr>
+                <th>Product Name</th>
+                <th>Stock Quantity</th>
+                <th>Reorder Level</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in reorder_levels %}
+            <tr>
+                <td>{{ item.product.product_name }}</td>
+                <td>{{ item.stock_quantity }}</td>
+                <td>{{ item.reorder_level }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3">No products below reorder level.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- The Expired Products -->
+    <!-- Expired Products will be shown in the dashboard   -->
+    <h2>Expired Products</h2>
+    <table class="table table-bordered">
+        <thead class="table-dark text-white">
+            <tr>
+                <th>Product Name</th>
+                <th>Expiry Date</th>
+                <th>Stock Quantity</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in expired_products %}
+            <tr>
+                <td>{{ item.product.product_name }}</td>
+                <td>{{ item.expiry_date }}</td>
+                <td>{{ item.stock_quantity }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3">No expired products.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- The Customers with Credit -->
+    <!-- Records of customers will be shown on teh dashboard of Mr. orban  -->
+    <h2>Customers with Credit</h2>
+    <table class="table table-bordered">
+        <thead class="table-dark text-white">
+            <tr>
+                <th>Customer Name</th>
+                <th>Product Name</th>
+                <th>Balance Due</th>
+                <th>Due Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for credit in credit_customers %}
+            <tr>
+                <td>{{ credit.customer.name }}</td>
+                <td>{{ credit.product.product_name }}</td>
+                <td>{{ credit.balance_due }}</td>
+                <td>{{ credit.due_date }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <!-- Span across four colums in the template -->
+                <td colspan="4">No customers with credit.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+{% endblock %}

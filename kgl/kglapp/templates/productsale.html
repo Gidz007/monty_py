@@ -1,0 +1,40 @@
+{% extends 'manager.html' %}
+
+
+
+{% block title %} Oparations {% endblock %}
+
+
+<!-- A template that shows the inventory entries -->
+{% block content %}
+<div class="container">
+    <table class="table table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th> Product Name </th>
+                <th> Price </th>
+                <th> Quantity </th>
+                <th> Description </th>
+                <th> Expiry Date </th>
+                <th> View </th>                              
+            </tr>
+        </thead>
+        {% for product in all_products %}
+            <tbody>
+                <tr>
+                    <td>{{ product.product }}</td>
+                    <td>{{ product.unit_price }} shs </td>
+                    <td>{{ product.stock_quantity }} kgs </td>
+                    <td>{{ product.description }}</td>
+                    <td>{{ product.expiry_date }}</td>
+
+                    <!-- Dynamic url to view a product -->
+                    <td>
+                        <a href="/view/{{ product.id }}"> View </a>                                       
+                    </td>                                      
+                </tr>
+            </tbody>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

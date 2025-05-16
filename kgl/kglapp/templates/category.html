@@ -1,0 +1,61 @@
+{% extends 'manager.html' %}
+{% block title %} Category {% endblock %}
+
+
+{% block content %}
+
+<!-- This form is for entering data in the branch modle. -->
+
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="row w-100">
+        <div class="col-6 mx-auto">
+
+            <h1> <strong>  Branch Entry Form </strong> </h1>
+            
+            <form action="" method="POST">
+                {% csrf_token %}
+                <div class="mb-3 mt-2">
+                    <label for="select_product" class="form-label"> Select the product </label>
+                    <select name="product" class="form-control">
+                        {% for product in all %}
+                            <option value="{{ product.id }}"> {{ product.product_name }} </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for=""> Branch Name </label>
+                    <input name="branch_name" type="text" class="form-control" placeholder="Enter the branch name">
+                </div>
+                <div class="mb-3">
+                    <label for=""> contact </label>
+                    <input name="contact" type="text" class="form-control" placeholder="Enter the branch contact">
+                </div>
+                <div class="mb-3">
+                    <label for=""> Location </label>
+                    <input name="location" type="text" class="form-control" placeholder="Enter the location">
+                </div>
+                <input type="submit" class="btn btn-outline-info" value="Submit">
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- This form is for imputing data for the Category model -->
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 10vh;">
+    <div class="row w-100">
+        <div class="col-6 mx-auto">
+
+            <h1> <strong> Category Entry Form </strong> </h1>
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="">Category</label>
+                    <input name="category_name" type="text" class="form-control mt-2" placeholder="Enter Category">
+                </div>        
+                <input type="submit" value="Add cat" class="btn btn-outline-info">
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+
+
+{% block title %} Product Entry {% endblock %}
+
+
+
+<!-- This form is to capture details of a branch that has coducted a creditsale  -->
+
+
+
+{% block content %}
+
+<!-- This is to track creditsales in a branch  -->
+
+<div class="container d-flex justify-content-center p-4 rounded align-items-center min-vh-100">
+    <div class="row w-100">
+        <div class="col-md-6 mx-auto">
+            <form action="" method="POST" class="bg-dark text-white p-2 rounded shadow-sm">
+                {% csrf_token %}                
+                <div class="mb-3">
+                    <label for="customer" class="form-label"> Select the customer </label>
+                    <select name="customer" id="">
+                        {% for custom in all_customers %}
+                            <option value="{{ custom.id }}">{{ custom.full_names }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="product" class="form-label"> Select the product </label>
+                    <select name="product" id="">
+                        {% for pro in all_products %}
+                            <option value="{{ pro.id }}">{{ pro.product_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="branch" class="form-label"> Select the branch </label>
+                    <select name="branch" id="">
+                        {% for brak in all_branches %}
+                            <option value="{{ brak.id }}">{{ brak.branch_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="quantity" class="form-label"> Quantity </label>
+                    <input name="quantity" required type="number" class="form-control" placeholder="Enter the quantity">
+                </div>
+                <div class="mb-3">
+                    <label for="unit_price" class="form-label"> Unit price </label>
+                    <input name="unit_price" required type="number" class="form-control" placeholder="Enter the unit price">
+                </div>
+                <div class="mb-3">
+                    <label for="total_price" class="form-label"> Total price </label>
+                    <input name="total_price" required type="number" class="form-control" placeholder="Enter the total price">
+                </div>
+                <div class="mb-3">
+                    <label for="amount_paid" class="form-label"> Amount Paid </label>
+                    <input name="expiry_date" required type="number" class="form-control" placeholder="Enter the amount paid">
+                </div>
+                <div class="mb-3">
+                    <label for="balance_due" class="form-label"> Balance </label>
+                    <input name="balance_due" required type="number" class="form-control" placeholder="Enter the balance">
+                </div>
+                <div class="mb-3">
+                    <label for="sales_agent" class="form-label"> Sales agent </label>
+                    <input name="sales_agent" required type="text" class="form-control" placeholder="Enter the agnet here">
+                </div>
+                <div class="mb-3">
+                    <label for="date_of_sale" class="form-label"> Date of sale </label>
+                    <input name="date_of_sale" required type="date" class="form-control" placeholder="30/04/2025">
+                </div>
+                <div class="mb-3">
+                    <label for="due_date" class="form-label"> Due date </label>
+                    <input name="due_date" required type="date" class="form-control" placeholder="30/04/2025">
+                </div>
+                <div class="mb-3">
+                    <label for="payment_status" class="form-label"> Payment status and method  </label>
+                    <select name="" id="">
+                        <option value="Pending"> Pending </option>
+                        <option value="Patial"> Patial </option>
+                        <option value="Paid"> Paid </option>
+                        <option value="Overdue"> Overdue </option>
+                    </select>
+                </div>
+                <input type="submit" class="btn btn-outline-info" value="Submit">
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

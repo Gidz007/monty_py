@@ -1,0 +1,109 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="Description" content="Enter your description here" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- this line assess the everything in the static file, and the main aim is to use external css in my project -->
+    <link rel="stylesheet" href="{% static 'styles/app.css' %}">
+    <!-- Inline CSS to override external styles -->
+    <style>
+        /* Wrapper for the entire page */
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            /* Ensure the wrapper spans the full height of the viewport */
+        }
+
+        /* Main content area */
+        .main-content {
+            flex: 1;
+            /* Pushes the footer to the bottom */
+        }
+
+        /* Footer */
+        #footer {
+            text-shadow: black;
+            background-color: darkturquoise;
+            color: rgb(28, 26, 26);
+            text-align: center;
+            padding: 5px;
+            bottom: 0;
+            right: 0px;
+            left: 0px;
+            width: 100vw;
+            position: fixed;
+        }
+    </style>
+    <Title>{% block title %}{% endblock %}</Title>
+</head>
+
+<body>
+
+    <!-- This is a receipt that is displayed after entering a sale -->
+    <div class="container mt-5">
+        {% if receipt %}
+            <!-- Receipt Section -->
+            <h2>Receipt</h2>
+            <p><strong>Product:</strong> {{ receipt.product.product_name }}</p>
+            <p><strong>Branch:</strong> {{ receipt.branch.branch_name }}</p>
+            <p><strong>Quantity:</strong> {{ receipt.quantity }}</p>
+            <p><strong>Unit Price:</strong> {{ receipt.unit_price }}</p>
+            <p><strong>Total Price:</strong> {{ receipt.total_price }}</p>
+            <p><strong>Amount Paid:</strong> {{ receipt.amount_paid }}</p>
+            <p><strong>Balance:</strong> {{ receipt.balance }}</p>
+            <p><strong>Date of Sale:</strong> {{ receipt.date_of_sale }}</p>
+            <a href="/invent/" class="btn btn-primary">Back to Inventory</a>
+        {% else %}
+
+
+
+        <!-- Form for entering a sale -->
+        <form method="POST">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="inventory" class="form-label">Select Product and Branch</label>
+                <select name="inventory" id="inventory" class="form-control" required>
+                    {% for inv in inventories %}
+                        <option value="{{ inv.id }}" {% if inv.id == inventory.id %}selected{% endif %}>
+                            {{ inv.product.product_name }} (Branch: {{ inv.branch.branch_name }}, Stock: {{ inv.stock_quantity }}, Price: {{ inv.unit_price }})
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="quantity" class="form-label">Quantity</label>
+                <input name="quantity" type="number" class="form-control" placeholder="Enter quantity" required>
+            </div>
+            <div class="mb-3">
+                <label for="amount_paid" class="form-label">Amount Paid</label>
+                <input name="amount_paid" type="number" class="form-control" placeholder="Enter amount paid" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Complete Sale</button>
+        </form>
+
+        {% if error %}
+        <div class="alert alert-danger mt-3">{{ error }}</div>
+        {% endif %}
+    {% endif %}   
+    </div>    
+
+
+
+    <!-- Footer -->
+    <div class="main-content">
+        <footer id="footer">
+            Copyright &copy; reserved to Gideon 2025
+        </footer>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/js/bootstrap.min.js"></script>
+</body>
+
+</html>

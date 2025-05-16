@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="Description" content="Enter your description here" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <title>Title</title>
+    <!-- Inline CSS to override external styles -->
+    <style>
+        /* Wrapper for the entire page */
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            /* Ensure the wrapper spans the full height of the viewport */
+        }
+
+        /* Main content area */
+        .main-content {
+            flex: 1;
+            /* Pushes the footer to the bottom */
+        }
+
+        /* Footer */
+        #footer {
+            text-shadow: black;
+            background-color: darkturquoise;
+            color: rgb(28, 26, 26);
+            text-align: center;
+            padding: 5px;
+            bottom: 0;
+            right: 0px;
+            left: 0px;
+            width: 100vw;
+            position: fixed;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container mt-5">
+        {% if error %}
+        <div class="alert alert-danger">{{ error }}</div>
+        {% endif %}
+
+        {% if receipt %}
+        <!-- Receipt Section -->
+        <h2>Receipt</h2>
+        <p><strong>Product:</strong> {{ receipt.product.product_name }}</p>
+        <p><strong>Branch:</strong> {{ receipt.branch.branch_name }}</p>
+        <p><strong>Quantity:</strong> {{ receipt.quantity }}</p>
+        <p><strong>Unit Price:</strong> {{ receipt.unit_price }}</p>
+        <p><strong>Total Price:</strong> {{ receipt.total_price }}</p>
+        <p><strong>Amount Paid:</strong> {{ receipt.amount_paid }}</p>
+        <p><strong>Balance:</strong> {{ receipt.balance }}</p>
+        <p><strong>Date of Sale:</strong> {{ receipt.date_of_sale }}</p>
+        <a href="/invent/" class="btn btn-primary">Back to Inventory</a>
+        {% else %}
+        <!-- Sale Form Section -->
+        <form method="POST">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="product" class="form-label">Product</label>
+                <select name="product" class="form-control">
+                    {% for product in products %}
+                    <option value="{{ product.id }}">{{ product.product_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="branch" class="form-label">Branch</label>
+                <select name="branch" class="form-control">
+                    {% for branch in branches %}
+                    <option value="{{ branch.id }}">{{ branch.branch_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="quantity" class="form-label">Quantity</label>
+                <input type="number" name="quantity" class="form-control" placeholder="Enter quantity">
+            </div>
+            <div class="mb-3">
+                <label for="amount_paid" class="form-label">Amount Paid</label>
+                <input type="number" step="0.01" name="amount_paid" class="form-control"
+                    placeholder="Enter amount paid">
+            </div>
+            <button type="submit" class="btn btn-success">Submit</button>
+        </form>
+        {% endif %}
+    </div>
+
+    <!-- Footer -->
+    <div class="main-content">
+        <footer id="footer">
+            Copyright &copy; reserved to Gideon 2025
+        </footer>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/js/bootstrap.min.js"></script>
+</body>
+
+</html>

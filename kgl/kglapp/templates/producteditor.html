@@ -1,0 +1,78 @@
+{% extends 'manager.html' %}
+
+{% block title %} Product Editor {% endblock %}
+
+
+<!-- This is a form that is to be used for editing a product -->
+
+
+{% block content %}
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-6">
+
+            <h1> Product edit Form </h1>
+            <form action="" method="POST">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="category" class="form-label">Category Name</label>
+                    <select name="cat_name" id="category" required class="form-select">
+                        {% for item in all_categories %}
+                        <option value="{{ item.id }}" {% if item.id == product.cat_name.id %}selected{% endif %}>
+                            {{ item.category_name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="supplier_name" class="form-label">Supplier Name</label>
+                    <input name="supplier_name" required type="text" class="form-control" value="{{ product.supplier_name }}">
+                </div>
+                <div class="mb-3">
+                    <label for="product_name" class="form-label">Product Name</label>
+                    <input name="product_name" required type="text" class="form-control" value="{{ product.product_name }}">
+                </div>
+                <div class="mb-3">
+                    <label for="sku" class="form-label">SKU</label>
+                    <input name="sku" required type="text" class="form-control" value="{{ product.sku }}">
+                </div>
+                <div class="mb-3">
+                    <label for="buying_price" class="form-label">Buying Price</label>
+                    <input name="buying_price" type="number" required class="form-control" value="{{ product.buying_price }}">
+                </div>
+                <div class="mb-3">
+                    <label for="quantity" class="form-label">Quantity</label>
+                    <input name="quantity" type="number" required class="form-control" value="{{ product.quantity }}">
+                </div>
+                <div class="mb-3">
+                    <label for="type_of_stock" class="form-label">Type of Stock</label>
+                    <select name="type_of_stock" class="form-select">
+                        <option value="Internal" {% if product.type_of_stock == "Internal" %}selected{% endif %}>Internal</option>
+                        <option value="External" {% if product.type_of_stock == "External" %}selected{% endif %}>External</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="date" class="form-label">Date</label>
+                    <input name="date" type="date" required class="form-control" value="{{ product.date|date:'Y-m-d' }}">
+                </div>
+                <div class="mb-3">
+                    <label for="unit_price" class="form-label">Unit Price</label>
+                    <input name="unit_price" required type="number" class="form-control" value="{{ product.unit_price }}">
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea name="description" class="form-control">{{ product.description }}</textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="expiry_date" class="form-label">Expiry Date</label>
+                    <input name="expiry_date" required type="date" class="form-control" value="{{ product.expiry_date|date:'Y-m-d' }}">
+                </div>
+                <input type="submit" class="btn btn-outline-info" value="Save Changes">
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

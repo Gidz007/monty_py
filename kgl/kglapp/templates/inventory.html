@@ -1,0 +1,90 @@
+{% extends 'manager.html' %}
+
+
+
+{% block title %} Inventory Management {% endblock %}
+
+
+
+<!-- This form is meant to capture the inventory details of each branch -->
+
+
+
+{% block content %}
+
+<!-- The lables each has a an input having the name of a specific name of the model -->
+<!-- I used a select on the category because i had two categories only -->
+
+<div class="container d-flex justify-content-center align-items-center p-5" style="min-height: 100vh;">
+    <div class="row w-100">
+        <div class="col-6 mx-auto">
+
+            <h1><strong> Inventory Entry Form </strong></h1>
+            <form action="" method="POST">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="product" class="form-label"> Select the proudct </label>
+                    <select name="product" id="product-select" class="form-control" required>
+                        {% for prod in all_products %}
+                            <option value="{{ prod.id }}" data-expiry="{{ prod.expiry_date|date:'Y-m-d' }}">
+                                {{ prod.product_name }} (Stock: {{ prod.quantity }})
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <select name="branch" id="" required>
+                        {% for brand in all_branches %}
+                            <option value="{{ brand.id }}">{{ brand.branch_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="buying_price" class="form-label"> Buying Price </label>
+                    <input name="buying_price" type="number" required class="form-control" placeholder="Enter the unit_of_measure">
+                </div>
+                <div class="mb-3">
+                    <label for="unit_of_measure" class="form-label"> Quantity </label>
+                    <input name="unit_of_measure" type="number" required class="form-control" placeholder="Enter the unit_of_measure">
+                </div>
+                <div class="mb-3">
+                    <label for="unit_price" class="form-label"> Unit_price </label>
+                    <input name="unit_price" type="number" required class="form-control" placeholder="Enter the Unit_price">
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label"> Description </label>
+                    <textarea name="description" class="form-control" placeholder="Enter the description"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="expiry_date" class="form-label"> Expiry Date </label>
+                    <input name="expiry_date" type="date" required class="form-control" placeholder="30/04/2025">
+                </div>
+                <div class="mb-3">
+                    <label for="stock_quantity" class="form-label"> Stock Quantity </label>
+                    <input name="stock_quantity" required type="number" class="form-control" placeholder="Enter the stock">
+                </div>
+                <div class="mb-3">
+                    <label for="reorder_level" class="form-label"> Reorder Level </label>
+                    <input name="reorder_level" required type="number" class="form-control" placeholder="Enter the reorder level">
+                </div>
+                <input type="submit" class="btn btn-outline-info" value="Submit">
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // JavaScript to auto-fill the expiry date based on the selected product
+    document.getElementById('product-select').addEventListener('change', function() {
+        const selectedOption = this.options[this.selectedIndex];
+        const expiryDate = selectedOption.getAttribute('data-expiry');
+        document.getElementById('expiry-date').value = expiryDate || '';
+    });
+
+    // Trigger change event on page load to pre-fill expiry date for the first product
+    document.getElementById('product-select').dispatchEvent(new Event('change'));
+</script>
+
+
+
+{% endblock %}

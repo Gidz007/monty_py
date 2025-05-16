@@ -1,0 +1,84 @@
+{% extends 'manager.html' %}
+
+
+
+{% block title %} Product Entry {% endblock %}
+
+
+
+<!-- This form is meant to capture the product entry -->
+
+
+
+{% block content %}
+
+<!-- The lables each has a an input having the name of a specific name of the model -->
+<!-- I used a select on the category because i had two categories only -->
+
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+    <div class="row w-100">
+        <div class="col-6 mx-auto">
+
+            <h1> Product entry form </h1>
+            <form action="" method="POST">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="category" class="form-label"> Category Name </label>
+                    <select name="cat_name" id="" required>
+                        {% for item in all_categories %}
+                            <option value="{{ item.id }}">{{ item.category_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="supplier_name" class="form-label"> Supplier_name</label>
+                    <input name="supplier_name" required type="text" class="form-control" placeholder="Enter the Supplier name">
+                </div>
+                <div class="mb-3">
+                    <label for="product" class="form-label"> Product Name </label>
+                    <input name="product_name" required type="text" class="form-control" placeholder="Enter the item name">
+                </div>
+                <div class="mb-3">
+                    <label for="sku" class="form-label"> Sku </label>
+                    <input name="sku" required type="text" class="form-control" placeholder="MHT-123456790">
+                </div>
+                <div class="mb-3">
+                    <label for="buying_price" class="form-label"> Buying_price </label>
+                    <input name="buying_price" type="number" required class="form-control" placeholder="Enter the buying_price">
+                </div>
+                <div class="mb-3">
+                    <label for="quantity" class="form-label"> Quantity </label>
+                    <input name="quantity" type="number" required class="form-control" placeholder="Enter the quantity">
+                </div>
+                <div class="mb-3">
+                    <label for="type_of_stock" class="form-label"> Type of stock </label>
+                    <select name="type_of_stock" id="">
+                        <option value="Internal"> Internal </option>
+                        <option value="External"> External </option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="date" class="form-label"> Date </label>
+                    <input name="date" type="datetime" required class="form-control" placeholder="30/04/2025">
+                </div>
+                <div class="mb-3">
+                    <label for="unit_price" class="form-label"> Unit Price </label>
+                    <input name="unit_price" required type="number" class="form-control" placeholder="Enter the unit price">
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label"> Description </label>
+                    <textarea name="description" class="form-control" placeholder="Description"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="expiry_date" class="form-label"> Expiry date </label>
+                    <input name="expiry_date" required type="date" class="form-control" placeholder="30/04/2025">
+                </div>
+                <input type="submit" class="btn btn-outline-info" value="Submit">
+            </form>            
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}
