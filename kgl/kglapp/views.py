@@ -307,7 +307,7 @@ def deletepage(request, id):
         # Delete the inventory record.
         data = request.POST
         to_delete.delete()
-        return redirect('/')
+        return redirect('products')
 
     context = {
         'details' : to_delete,

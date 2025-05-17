@@ -1,25 +1,42 @@
-{% extends 'base.html' %}
+{% extends 'baselogin.html' %}
 {% block title %}Home page{% endblock %}
 
 
 <!-- This is a login form to enable access  -->
 {% block content %}
-<div class="container">
-    <div class="row">
-        <div class="col-6">
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 90vh;">
+    <div class="row w-100">
+        <div class="col-6 mx-auto">
             <form  method="POST" action="">
                 {% csrf_token %}
                 <div class="mb-3">
-                    <label>Username:</label><br>
-                    <input type="text" name="username"><br><br>
+                    <label for="username" class="form-label">Username:</label>
+                    <input type="text" class="form-control" placeholder="Enter you username here" name="username">
                 </div>                
-                <div class="mb-3">
-                    <label for="psw" class="form-lable">Password:</label>
-                    <input type="password" class="form-control" placeholder="Enter your password" name="pswrd">
+                <div class="mb-3" style="position: relative;">
+                    <label for="password" class="form-lable">Password:</label>
+                    <input type="password" required class="form-control" placeholder="Enter your password" name="pswrd" id="password">
+                    <span toggle="#password" class="fa fa-fw fa-eye field-icon toggle-password" style="position: absolute; top: 70%; right: 20px; transform: translateY(-50%); cursor: pointer;"></span>
                 </div>       
                 <button type="submit" class="btn btn-outline-info"> login </button>                        
             </form>            
         </div>
     </div>
 </div>
+
+<script>
+document.querySelector('.toggle-password').addEventListener('click', function (e) {
+    const passwordInput = document.getElementById('password');
+    const icon = this;
+    if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        icon.classList.remove("fa-eye");
+        icon.classList.add("fa-eye-slash");
+    } else {
+        passwordInput.type = "password";
+        icon.classList.remove("fa-eye-slash");
+        icon.classList.add("fa-eye");
+    }
+});
+</script>
 {% endblock %}
