@@ -12,7 +12,9 @@
                 <div class="mb-3">
                     <label for="username" class="form-label">Username:</label>
                     <input type="text" class="form-control" placeholder="Enter you username here" name="username">
-                </div>                
+                </div>  
+                
+                <!-- Adding a toggle span that shows the password as the user inputs it in -->
                 <div class="mb-3" style="position: relative;">
                     <label for="password" class="form-lable">Password:</label>
                     <input type="password" required class="form-control" placeholder="Enter your password" name="pswrd" id="password">
@@ -24,6 +26,7 @@
     </div>
 </div>
 
+<!-- Javascripts code that enables the eye icon to display the password -->
 <script>
 document.querySelector('.toggle-password').addEventListener('click', function (e) {
     const passwordInput = document.getElementById('password');

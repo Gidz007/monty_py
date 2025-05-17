@@ -229,7 +229,7 @@ def product_edit(request, id):
         product.save()
 
         # Redirect to a relevant page (e.g., product list or product detail page)
-        return redirect('products')
+        return redirect('displayproduce')
 
     # Pass the product to the template for rendering.
     context = {
