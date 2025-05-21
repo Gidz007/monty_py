@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
-    <title>Title</title>
+    <title> Sales form </title>
     <!-- Inline CSS to override external styles -->
     <style>
         /* Wrapper for the entire page */
@@ -53,32 +53,29 @@
         <h2>Receipt</h2>
         <p><strong>Product:</strong> {{ receipt.product.product_name }}</p>
         <p><strong>Branch:</strong> {{ receipt.branch.branch_name }}</p>
-        <p><strong>Quantity:</strong> {{ receipt.quantity }}</p>
-        <p><strong>Unit Price:</strong> {{ receipt.unit_price }}</p>
-        <p><strong>Total Price:</strong> {{ receipt.total_price }}</p>
-        <p><strong>Amount Paid:</strong> {{ receipt.amount_paid }}</p>
-        <p><strong>Balance:</strong> {{ receipt.balance }}</p>
+        <p><strong>Quantity:</strong> {{ receipt.quantity }} kgs </p>
+        <p><strong>Unit Price:</strong> {{ receipt.unit_price }} shs </p>
+        <p><strong>Total Price:</strong> {{ receipt.total_price }} shs </p>
+        <p><strong>Amount Paid:</strong> {{ receipt.amount_paid }} shs </p>
+        <p><strong>Balance:</strong> {{ receipt.balance }} shs </p>
         <p><strong>Date of Sale:</strong> {{ receipt.date_of_sale }}</p>
-        <a href="/invent/" class="btn btn-primary">Back to Inventory</a>
+        <a href="/products/" class="btn btn-primary">Back to Inventory</a>
         {% else %}
+
+
+        <h1><strong> Enter product details </strong></h1>
         <!-- Sale Form Section -->
         <form method="POST">
             {% csrf_token %}
             <div class="mb-3">
                 <label for="product" class="form-label">Product</label>
-                <select name="product" class="form-control">
-                    {% for product in products %}
-                    <option value="{{ product.id }}">{{ product.product_name }}</option>
-                    {% endfor %}
-                </select>
+                <input name="product" type="text" class="form-control" value="{{selected_product.product_name}}" readonly>
+                <input type="hidden" name="product" value="{{selected_product.id}}">
             </div>
             <div class="mb-3">
                 <label for="branch" class="form-label">Branch</label>
-                <select name="branch" class="form-control">
-                    {% for branch in branches %}
-                    <option value="{{ branch.id }}">{{ branch.branch_name }}</option>
-                    {% endfor %}
-                </select>
+                <input name="branch" type="text" class="form-control" value="{{selected_branch.branch_name}}" readonly>
+                <input type="hidden" name="branch" value="{{selected_branch.id}}">
             </div>
             <div class="mb-3">
                 <label for="quantity" class="form-label">Quantity</label>
@@ -86,8 +83,7 @@
             </div>
             <div class="mb-3">
                 <label for="amount_paid" class="form-label">Amount Paid</label>
-                <input type="number" step="0.01" name="amount_paid" class="form-control"
-                    placeholder="Enter amount paid">
+                <input type="number" step="0.01" name="amount_paid" class="form-control" placeholder="Enter amount paid">
             </div>
             <button type="submit" class="btn btn-success">Submit</button>
         </form>

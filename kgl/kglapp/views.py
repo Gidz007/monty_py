@@ -713,6 +713,26 @@ def pos_sale(request, id):
         total_price = inventory.unit_price * quantity
         balance = total_price - amount_paid
 
+        # --- CHECKING FOR DUPLICATES ---
+        from datetime import date
+        duplicate = Receipt.objects.filter(
+            product_id=product_id,
+            branch_id=branch_id,
+            quantity=quantity,
+            total_price=total_price,
+            amount_paid=amount_paid,
+            date_of_sale=date.today()
+        ).exists()
+        if duplicate:
+            context = {
+                'error': 'This sale has already been registered today!',
+                'products': Product.objects.all(),
+                'branches': Branch.objects.all(),
+                'selected_product': selected_inventory.product,
+            }
+            return render(request, 'sales.html', context)
+        # --- CHECK END ---
+
         # Deduct the sold quantity from the inventory
         inventory.stock_quantity -= quantity
         inventory.save()
@@ -735,12 +755,15 @@ def pos_sale(request, id):
         )
         receipt.save()
 
-        # Pass the receipt details to the template
+        # Pass the receipt to the template to show it
+        inventories = Inventory.objects.all()
         context = {
-            'receipt': receipt,
-
-            # Pass the selected product
-            'selected_product': selected_inventory.product,  
+            'products': Product.objects.all(),
+            'branches': Branch.objects.all(),
+            'selected_product': selected_inventory.product,
+            'selected_branch': selected_inventory.branch,
+            'inventory': inventories,
+            'receipt': receipt,  # This will be used to show the receipt
         }
         return render(request, 'sales.html', context)
 
@@ -751,12 +774,28 @@ def pos_sale(request, id):
         'branches': Branch.objects.all(),
 
         # Pass the selected product.
-        'selected_product': selected_inventory.product,  
+        'selected_product': selected_inventory.product,
+        'selected_branch': selected_inventory.branch,
 
         # Pass all the inventories to the template. 
         'inventory' : inventories, # 
     }
     return render(request, 'sales.html', context)
+
+
+
+##################################################
+## The manager's landing page.
+# On loging in the manager lands on this page after loging in.
+def managerview(request):
+    return render(request, 'managerland.html')
+
+
+
+#################################################
+## The salesagent landing page.
+def salesagentland(request):
+    return render(request, 'salesagent.html')
 
 
 
