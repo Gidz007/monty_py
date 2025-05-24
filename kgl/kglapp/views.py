@@ -4,11 +4,13 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import get_object_or_404
 from django.db.models import Sum
+from django.http import HttpResponseForbidden
 
 # Importing models.
 from django.db import models
 
 # This imports the datatime for python. 
+from datetime import datetime
 from datetime import date
 
 # This imports the F model from djanago.
@@ -20,9 +22,32 @@ from kglapp.models import Product, Category, Inventory, Branch, Customer, Credit
 # Create your views here.
 
 ##################################################
-## Custome decorators to chck for roles before authorisation.
-# Ths manager custome decorator.
+## Custome decorator to check for roles before authorisation.
+# Ths manager and salesagent custome decorator.
+def manager_or_salesagent_required(view_func):
+    @login_required
+    def _wrapped_view(request, *args, **kwargs):
+        if hasattr(request.user, 'userprofile') and (
+            request.user.userprofile.is_manager or request.user.userprofile.is_salesagent
+        ):
+            return view_func(request, *args, **kwargs)
+        return HttpResponseForbidden("You are not authorized to access this page.")
+    return _wrapped_view
+
+
+
+# The manager custome decorator.
 def manager_required(view_func):
+    @login_required
+    def _wrapped_view(request, *args, **kwargs):
+        if hasattr(request.user, 'userprofile') and request.user.userprofile.is_manager:
+            return view_func(request, *args, **kwargs)
+        return HttpResponseForbidden("You are not authorized to access this page.")
+    return _wrapped_view
+
+
+# The salesagent custome decorator.
+def salesagent_required(view_func):
     @login_required
     def _wrapped_view(request, *args, **kwargs):
         if hasattr(request.user, 'userprofile') and request.user.userprofile.is_manager:
@@ -41,25 +66,10 @@ def owner_required(view_func):
     return _wrapped_view
 
 
-######################################################
-## This is a custom decorator that checks for conditions before authorisation.
-## This is for the sales agent and the manager.
-def role_required(allowed_roles):
-    def decorator(view_func):
-        @login_required
-        def _wrapped_view(request, *args, **kwargs):
-            # Check if the user has a UserProfile and matches one of the allowed roles
-            if hasattr(request.user, 'userprofile'):
-                userprofile = request.user.userprofile
-                if (userprofile.is_manager and 'manager' in allowed_roles) or \
-                   (userprofile.is_sales_agent and 'sales_agent' in allowed_roles):
-                    return view_func(request, *args, **kwargs)
-            return HttpResponseForbidden("You are not authorized to access this page.")
-        return _wrapped_view
-    return decorator
 
-# @login_required
-# @user_passes_test(is_owner)
+
+########################################################
+@owner_required
 def manual_register_user(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -99,7 +109,18 @@ def login_user(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('home')  # change 'home' to whatever your home page name is
+            # Redirect based on role
+            if user.userprofile.is_owner:
+                # Owner's dashboard.
+                return redirect('dashboard')  
+            elif user.userprofile.is_manager:
+                # Manager's landing page.
+                return redirect('manager_landing')
+            elif user.userprofile.is_salesagent:
+                # Salesagent landing page
+                return redirect('salesagent_landing')
+            else:
+                return redirect('/') 
         else:
             context = {'error': 'Invalid username or password'}
             return render(request, 'login.html', context)
@@ -117,7 +138,7 @@ def login_user(request):
 # This model to to be inheritated by the product model. and it will be in the form. of products.
 # This is for distinguishing the different categories of products from the legumes and the cereals.
 # @login_required
-# @manager_required
+@manager_required
 def categorypage(request):
     if request.method == 'POST':
         data = request.POST
@@ -144,7 +165,7 @@ def categorypage(request):
 # There will be a loop for that will interlece through the model to display the products.
 # @login_required
 # @user_passes_test(lambda u: u.is_salesagent or u.is_manager)
-# @role_required(['sales_agent', 'manager'])
+@manager_or_salesagent_required
 def inventory_view(request):
     all = Inventory.objects.all()
 
@@ -162,7 +183,7 @@ def inventory_view(request):
 ### A view to handle a checked out or sold product.
 # This will lead to a page that displays all the details of a particular product.
 # This is the view for the dynamic url the goes to the page of the product details.
-# @role_required(['sales_agent', 'manager'])
+@manager_or_salesagent_required
 def product_detail(request, id):
     sent_id = id
     all = Inventory.objects.get(id=sent_id )
@@ -179,7 +200,7 @@ def product_detail(request, id):
 
 ###############################################
 ## A view to diplay all products tageting a way i can edit them before they a entred in the inventory system of a particular branch.
-# @role_required(['sales_agent', 'manager'])
+@manager_required
 def display_products(request):
     all_objs = Product.objects.all()
 
@@ -197,7 +218,7 @@ def display_products(request):
 
 ###############################################
 ## A view for editing products in that a purchased.
-# @manager_required
+@manager_required
 def product_edit(request, id):
     # Fetch the product to edit
     product = get_object_or_404(Product, id=id)
@@ -243,7 +264,7 @@ def product_edit(request, id):
 
 ###############################################
 ## This is the edite inventory view.
-# @manager_required
+@manager_required
 def editinventory(request, id):
     sent_id = id
     invent = Inventory.objects.get(id=sent_id)
@@ -298,6 +319,7 @@ def editinventory(request, id):
 
 ################################################
 ## This view is to handle the a product being deleted.
+@manager_required
 def deletepage(request, id):
 
     # Fetch the inventory record. 
@@ -327,7 +349,7 @@ def deletepage(request, id):
 # This going to be mainly for displaying details of the product that is selected to be sold.
 # @login_required
 # @user_passes_test(is_owner)
-# @manager_required
+@manager_required
 def addproduct(request):
 
     # Message to be passed through a context to be rendered in html. 
@@ -383,7 +405,7 @@ def addproduct(request):
 # This will collect data from the user and store it in the database.
 # @login_required
 # @user_passes_test(is_owner)
-# @manager_required
+@manager_required
 def branchpage(request):
     if request.method == 'POST':
         data = request.POST 
@@ -418,7 +440,7 @@ def branchpage(request):
 ### This is the inventory logic for entry of an inventory.
 # This is meant to track the transactions in every branch.
 # It will have a foreighn key from the product and branch to know from were it was sold.
-# @manager_required
+@manager_required
 def inventory(request):
     if request.method == 'POST':
         data = request.POST
@@ -486,7 +508,7 @@ def logout_user(request):
 ##################################################
 ## The customer page.
 # This form recording the customers relationship with business for one to qualify for credisales.
-# @role_required(['sales_agent', 'manager'])
+@manager_or_salesagent_required
 def customerpage(request):
     if request.method == 'POST':
         data = request.POST
@@ -512,7 +534,7 @@ def customerpage(request):
 ## This is a view for the creditsale.
 # This is for tracking which branch has transacted a product.
 # And which branch has done so.
-# @role_required(['sales_agent', 'manager'])   
+@manager_or_salesagent_required   
 def creditpage(request):
     if request.method == 'POST':
         data = request.POST
@@ -578,8 +600,8 @@ def creditpage(request):
 
 
 #######################################################
-## A view to querry data to the dashboard of mr orban.
-# @owner_required
+# A view to querry data to the dashboard of mr orban.
+@owner_required
 def dashboard(request):
 
     
@@ -605,7 +627,7 @@ def dashboard(request):
 ## These a dashboard reports. 
 ## This is the view that handles the branch details.
 # it will contain a dynamic url that will querry data, for each branch.
-# @owner_required
+@owner_required
 def branchdetail(request, id):
     # Get the branch object
     branch = get_object_or_404(Branch, pk=id)
@@ -668,7 +690,7 @@ def branchdetail(request, id):
 # This code checks stock availability and ensures there is enough to make a sale.
 # The code also updataes the new quantity in the database.    
 # @login_required
-# @role_required(['sales_agent', 'manager'])
+@manager_or_salesagent_required
 def pos_sale(request, id):
 
     try:
@@ -787,6 +809,7 @@ def pos_sale(request, id):
 ##################################################
 ## The manager's landing page.
 # On loging in the manager lands on this page after loging in.
+@manager_required
 def managerview(request):
     return render(request, 'managerland.html')
 
@@ -794,7 +817,9 @@ def managerview(request):
 
 #################################################
 ## The salesagent landing page.
+@salesagent_required
 def salesagentland(request):
+    # Only for showing the credit sale/customer form.
     return render(request, 'salesagent.html')
 
 

@@ -44,18 +44,19 @@
 
     <div class="row">
         <div class="col-6">
-            <div class="flex flex-col mt-5">
-                <label for="delete" class="form-label"> Delete Inventory </label>
-                <a href="/delete/{{ product.id }}" style="background-color:Tomato;" class="text-white p-3 rounded mb-3">
-                    Delete </a>
-            </div>
-
-            <!-- A dynamic url to edit an inventory -->
-            <div class="flex flex-col mt-5 ">
-                <label for="edit" class="form-label"> Edit Inventory </label>
-                <a href="/edit/{{ product.id }}" style="background-color:MediumSeaGreen;"
-                    class="text-white mt-5 mb-3 p-3 rounded"> Edit </a>
-            </div>
+            {% if request.user.userprofile.is_manager %}
+                <div class="flex flex-col mt-5">
+                    <label for="delete" class="form-label"> Delete Inventory </label>
+                    <a href="{% url 'deletepage' product.id %}" style="background-color:Tomato;"
+                        class="text-white p-3 rounded mb-3">
+                    </a>
+                </div>
+                <div class="flex flex-col mt-5 ">
+                    <label for="edit" class="form-label"> Edit Inventory </label>
+                    <a href="{% url 'editinventory' product.id %}" style="background-color:MediumSeaGreen;"
+                        class="text-white mt-5 mb-3 p-3 rounded"> Edit </a>
+                </div>
+            {% endif %}
 
             <!-- A dynamic url to sale an inventory -->
             <div class="flex flex-col mt-5 ">
